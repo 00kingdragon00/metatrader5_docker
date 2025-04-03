@@ -2,10 +2,10 @@
 
 # Set variables
 mt5setup_url="https://download.mql5.com/cdn/web/metaquotes.software.corp/mt5/mt5setup.exe"
-mt5file="/config/.wine/drive_c/Program Files/MetaTrader 5/terminal64.exe"
+mt5file="/root/.wine/drive_c/Program Files/MetaTrader 5/terminal64.exe"
 python_url="https://www.python.org/ftp/python/3.9.13/python-3.12.9-amd64.exe"
+webview="https://msedge.sf.dl.delivery.mp.microsoft.com/filestreamingservice/files/c1336fd6-a2eb-4669-9b03-949fc70ace0e/MicrosoftEdgeWebview2Setup.exe"
 wine_executable="wine"
-
 
 # Function to show messages
 log_message() {
@@ -15,18 +15,3 @@ log_message() {
     [ ! -w "$logfile" ] && logfile="/tmp/mt5_setup.log"
     echo "$(date '+%Y-%m-%d %H:%M:%S') - [$level] $message" >> "$logfile"
 }
-
-# Function to check if a Python package is installed in Wine
-is_wine_python_package_installed() {
-    $wine_executable python -c "import pkg_resources; pkg_resources.require('$1')" 2>/dev/null
-    return $?
-}
-
-# Function to check if a Python package is installed in Linux
-is_python_package_installed() {
-    python3 -c "import pkg_resources; pkg_resources.require('$1')" 2>/dev/null
-    return $?
-}
-
-# Mute Unnecessary Wine Errors
-export WINEDEBUG=-all,err-toolbar,fixme-all
