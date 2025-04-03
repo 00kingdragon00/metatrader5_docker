@@ -7,3 +7,4 @@ LICENSE.md
 .env.example
 .env
 config
+log
