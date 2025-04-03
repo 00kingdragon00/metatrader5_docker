@@ -1,19 +1,18 @@
 services:
   mt5:
-    build:
+    build: 
       context: .
       dockerfile: Dockerfile
     container_name: mt5
+    shm_size: '2gb'
+    environment:
+      - VNC_PW=password
     volumes:
-      - ./config:/config
-    restart: unless-stopped
+      - /home/<path>:/root/.wine/
     ports:
-      - 3000:3000
+      - 6901:6901
     networks:
       - main_network
-
-
-
 
 networks:
   main_network:
