@@ -49,6 +49,31 @@ copy_ea() {
     return 0
 }
 
+run_ea_main() {
+    log_message "RUNNING" "06-run-ea.sh"
+
+    if [ ! -e "$mt5file" ]; then
+        log_message "ERROR" "terminal64.exe not found; cannot launch MT5."
+        return 1
+    fi
+
+    if autologin_ready; then
+        if [ -n "${MT5_EA:-}" ] && ! copy_ea; then
+            log_message "ERROR" "EA '$MT5_EA' not found in $EA_SRC_DIR; launching login-only."
+            MT5_EA=""
+        fi
+        write_startup_ini "$STARTUP_INI"
+        log_message "INFO" "Auto-login enabled; launching MT5 with startup config."
+        "$wine_executable" "$mt5file" /portable "/config:config\\startup.ini" &
+    else
+        if [ -n "${MT5_LOGIN:-}" ]; then
+            log_message "ERROR" "MT5_LOGIN set but MT5_PASSWORD/MT5_SERVER missing; launching MT5 normally."
+        fi
+        log_message "INFO" "No auto-login; launching MT5 normally."
+        "$wine_executable" "$mt5file" /portable &
+    fi
+}
+
 if [ "${_RUN_EA_NO_MAIN:-0}" != "1" ]; then
     run_ea_main "$@"
 fi
