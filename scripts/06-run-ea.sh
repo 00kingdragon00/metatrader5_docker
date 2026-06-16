@@ -38,13 +38,20 @@ write_startup_ini() {
     } > "$out"
 }
 
+config_arg_path() {
+    local rel="${STARTUP_INI#"$MT5DIR"/}"
+    printf '%s' "${rel//\//\\}"
+}
+
 copy_ea() {
     mkdir -p "$EXPERTS_DIR"
     if [ -d "$EA_SRC_DIR" ]; then
-        cp -f "$EA_SRC_DIR"/*.ex5 "$EXPERTS_DIR"/ 2>/dev/null || true
+        cp -f "$EA_SRC_DIR"/*.[Ee][Xx]5 "$EXPERTS_DIR"/ 2>/dev/null || true
     fi
-    if [ -n "${MT5_EA:-}" ] && [ ! -e "$EXPERTS_DIR/$(ea_name_noext "$MT5_EA").ex5" ]; then
-        return 1
+    if [ -n "${MT5_EA:-}" ]; then
+        local base
+        base="$(ea_name_noext "$MT5_EA")"
+        ls "$EXPERTS_DIR/$base".[Ee][Xx]5 >/dev/null 2>&1 || return 1
     fi
     return 0
 }
@@ -64,7 +71,7 @@ run_ea_main() {
         fi
         write_startup_ini "$STARTUP_INI"
         log_message "INFO" "Auto-login enabled; launching MT5 with startup config."
-        "$wine_executable" "$mt5file" /portable "/config:config\\startup.ini" &
+        "$wine_executable" "$mt5file" /portable "/config:$(config_arg_path)" &
     else
         if [ -n "${MT5_LOGIN:-}" ]; then
             log_message "ERROR" "MT5_LOGIN set but MT5_PASSWORD/MT5_SERVER missing; launching MT5 normally."

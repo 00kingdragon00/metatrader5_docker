@@ -52,5 +52,16 @@ check "ex5 copied to Experts" '[ -e "$EXPERTS_DIR/MyEA.ex5" ]'
 rm -f "$EXPERTS_DIR"/*.ex5 "$EA_SRC_DIR"/*.ex5
 MT5_EA=Missing.ex5 ; check "copy_ea fails when named EA absent" '! copy_ea'
 
+# config_arg_path derives backslash relative path from STARTUP_INI under MT5DIR
+STARTUP_INI="$MT5DIR/config/startup.ini" ; check "config_arg_path default" '[ "$(config_arg_path)" = "config\\startup.ini" ]'
+STARTUP_INI="$MT5DIR/sub/dir/x.ini" ; check "config_arg_path nested" '[ "$(config_arg_path)" = "sub\\dir\\x.ini" ]'
+STARTUP_INI="$CONFIG_DIR/startup.ini"
+
+# copy_ea handles uppercase .EX5 source files
+rm -f "$EXPERTS_DIR"/*.ex5 "$EXPERTS_DIR"/*.EX5 "$EA_SRC_DIR"/*.ex5 "$EA_SRC_DIR"/*.EX5
+echo dummy > "$EA_SRC_DIR/UpperEA.EX5"
+MT5_EA=UpperEA.EX5 ; check "copy_ea handles .EX5 source" 'copy_ea'
+check "uppercase ex5 copied" '[ -e "$EXPERTS_DIR/UpperEA.EX5" ]'
+
 rm -rf "$TMP"
 exit $fail
