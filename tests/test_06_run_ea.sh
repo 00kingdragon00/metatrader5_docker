@@ -25,6 +25,7 @@ check "ea_name_noext leaves bare name" '[ "$(ea_name_noext MyEA)" = "MyEA" ]'
 MT5_LOGIN=1 MT5_PASSWORD=p MT5_SERVER=s ; check "autologin_ready all set" 'autologin_ready'
 MT5_LOGIN= ; check "autologin_ready missing login fails" '! autologin_ready'
 MT5_LOGIN=1 MT5_PASSWORD= MT5_SERVER=s ; check "autologin_ready missing pw fails" '! autologin_ready'
+MT5_LOGIN=1 MT5_PASSWORD=p MT5_SERVER= ; check "autologin_ready missing server fails" '! autologin_ready'
 
 MT5_LOGIN=12345 MT5_PASSWORD=secret MT5_SERVER=Broker-Demo \
 MT5_EA=MyEA.ex5 MT5_SYMBOL=EURUSD MT5_TIMEFRAME=H1 \
