@@ -63,5 +63,9 @@ echo dummy > "$EA_SRC_DIR/UpperEA.EX5"
 MT5_EA=UpperEA.EX5 ; check "copy_ea handles .EX5 source" 'copy_ea'
 check "uppercase ex5 copied" '[ -e "$EXPERTS_DIR/UpperEA.EX5" ]'
 
+# startup.ini is written with 600 perms (holds the password)
+MT5_LOGIN=1 MT5_PASSWORD=p MT5_SERVER=s write_startup_ini "$CONFIG_DIR/perm.ini"
+check "startup.ini is chmod 600" '[ "$(stat -c %a "$CONFIG_DIR/perm.ini")" = "600" ]'
+
 rm -rf "$TMP"
 exit $fail

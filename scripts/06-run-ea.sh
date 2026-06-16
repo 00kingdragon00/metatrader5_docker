@@ -36,6 +36,7 @@ write_startup_ini() {
         echo "Symbol=$sym"
         echo "Period=$tf"
     } > "$out"
+    chmod 600 "$out" 2>/dev/null || true
 }
 
 config_arg_path() {
