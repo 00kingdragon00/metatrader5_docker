@@ -2,3 +2,4 @@ config
 log
 *.tar
 mt5ubuntu.sh
+experts/*.ex5

@@ -7,8 +7,16 @@ services:
     shm_size: '2gb'
     environment:
       - VNC_PW=password
+      # MT5 auto-login + EA (optional). Omit MT5_LOGIN to just open MT5.
+      # - MT5_LOGIN=12345678
+      # - MT5_PASSWORD=yourpassword
+      # - MT5_SERVER=Broker-Demo
+      # - MT5_EA=MyEA.ex5
+      # - MT5_SYMBOL=EURUSD
+      # - MT5_TIMEFRAME=H1
     volumes:
       - /home/<path>:/root/.wine/
+      - ./experts:/ea:ro
     ports:
       - 6901:6901
 #     networks:
