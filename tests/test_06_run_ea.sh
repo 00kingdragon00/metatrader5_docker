@@ -26,5 +26,23 @@ MT5_LOGIN=1 MT5_PASSWORD=p MT5_SERVER=s ; check "autologin_ready all set" 'autol
 MT5_LOGIN= ; check "autologin_ready missing login fails" '! autologin_ready'
 MT5_LOGIN=1 MT5_PASSWORD= MT5_SERVER=s ; check "autologin_ready missing pw fails" '! autologin_ready'
 
+MT5_LOGIN=12345 MT5_PASSWORD=secret MT5_SERVER=Broker-Demo \
+MT5_EA=MyEA.ex5 MT5_SYMBOL=EURUSD MT5_TIMEFRAME=H1 \
+  write_startup_ini "$CONFIG_DIR/startup.ini"
+INI="$CONFIG_DIR/startup.ini"
+check "ini has Login"            'grep -qx "Login=12345" "$INI"'
+check "ini has Password"         'grep -qx "Password=secret" "$INI"'
+check "ini has Server"           'grep -qx "Server=Broker-Demo" "$INI"'
+check "ini has AllowLiveTrading" 'grep -qx "AllowLiveTrading=true" "$INI"'
+check "ini Expert no ext"        'grep -qx "Expert=MyEA" "$INI"'
+check "ini Symbol"               'grep -qx "Symbol=EURUSD" "$INI"'
+check "ini Period"               'grep -qx "Period=H1" "$INI"'
+check "ini StartUp section"      'grep -qx "\[StartUp\]" "$INI"'
+MT5_LOGIN=1 MT5_PASSWORD=1 MT5_SERVER=1 MT5_EA= MT5_SYMBOL= MT5_TIMEFRAME= \
+  write_startup_ini "$CONFIG_DIR/def.ini"
+check "default symbol EURUSD" 'grep -qx "Symbol=EURUSD" "$CONFIG_DIR/def.ini"'
+check "default period H1"     'grep -qx "Period=H1" "$CONFIG_DIR/def.ini"'
+check "no Expert line when MT5_EA empty" '! grep -q "^Expert=" "$CONFIG_DIR/def.ini"'
+
 rm -rf "$TMP"
 exit $fail
