@@ -10,5 +10,6 @@ fi
 /scripts/04-install-mono.sh
 /scripts/03-install-webview.sh
 /scripts/05-install-mt5.sh
+/scripts/06-run-ea.sh
 
 
