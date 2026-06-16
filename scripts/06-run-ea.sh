@@ -38,6 +38,17 @@ write_startup_ini() {
     } > "$out"
 }
 
+copy_ea() {
+    mkdir -p "$EXPERTS_DIR"
+    if [ -d "$EA_SRC_DIR" ]; then
+        cp -f "$EA_SRC_DIR"/*.ex5 "$EXPERTS_DIR"/ 2>/dev/null || true
+    fi
+    if [ -n "${MT5_EA:-}" ] && [ ! -e "$EXPERTS_DIR/$(ea_name_noext "$MT5_EA").ex5" ]; then
+        return 1
+    fi
+    return 0
+}
+
 if [ "${_RUN_EA_NO_MAIN:-0}" != "1" ]; then
     run_ea_main "$@"
 fi

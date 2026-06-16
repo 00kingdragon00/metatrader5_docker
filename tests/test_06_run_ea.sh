@@ -44,5 +44,12 @@ check "default symbol EURUSD" 'grep -qx "Symbol=EURUSD" "$CONFIG_DIR/def.ini"'
 check "default period H1"     'grep -qx "Period=H1" "$CONFIG_DIR/def.ini"'
 check "no Expert line when MT5_EA empty" '! grep -q "^Expert=" "$CONFIG_DIR/def.ini"'
 
+rm -f "$EXPERTS_DIR"/*.ex5
+echo dummy > "$EA_SRC_DIR/MyEA.ex5"
+MT5_EA=MyEA.ex5 ; check "copy_ea succeeds when EA present" 'copy_ea'
+check "ex5 copied to Experts" '[ -e "$EXPERTS_DIR/MyEA.ex5" ]'
+rm -f "$EXPERTS_DIR"/*.ex5 "$EA_SRC_DIR"/*.ex5
+MT5_EA=Missing.ex5 ; check "copy_ea fails when named EA absent" '! copy_ea'
+
 rm -rf "$TMP"
 exit $fail
