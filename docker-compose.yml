@@ -11,9 +11,9 @@ services:
       - /home/<path>:/root/.wine/
     ports:
       - 6901:6901
-    networks:
-      - main_network
+#     networks:
+#       - main_network
 
-networks:
-  main_network:
-    external: true
+# networks:
+#   main_network:
+#     external: true

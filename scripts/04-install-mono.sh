@@ -22,9 +22,3 @@ if [ ! -e "/root/.wine/drive_c/windows/mono" ]; then
 else
     log_message "INFO" "Mono is already installed."
 fi
-
-
-if [ ! -d "$WINEPREFIX" ]; then
-    echo ">> Initializing Wine..."
-    winecfg -v=win10
-fi
